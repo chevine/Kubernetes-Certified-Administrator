@@ -1,16 +1,23 @@
 #! /bin/bash
 
-KUBERNETES_VERSION="1.21.1-00"
+KUBERNETES_VERSION="1.26.5-00"
 
 # disable swap 
 sudo swapoff -a
 # keeps the swap off during reboot
 sudo sed -i '/ swap / s/^\(.*\)$/#\1/g' /etc/fstab
 
-sudo curl -fsSLo /usr/share/keyrings/kubernetes-archive-keyring.gpg https://packages.cloud.google.com/apt/doc/apt-key.gpg
-echo "deb [signed-by=/usr/share/keyrings/kubernetes-archive-keyring.gpg] https://apt.kubernetes.io/ kubernetes-xenial main" | sudo tee /etc/apt/sources.list.d/kubernetes.list
-sudo apt-get update -y
-sudo apt-get install -y apt-transport-https ca-certificates curl gnupg lsb-release containerd bash-completion
+
+sudo apt-get update
+sudo apt-get install -y apt-transport-https ca-certificates curl
+sudo curl -fsSL https://packages.cloud.google.com/apt/doc/apt-key.gpg | sudo gpg --dearmor -o /etc/apt/keyrings/kubernetes-archive-keyring.gpg
+sudo echo "deb [signed-by=/etc/apt/keyrings/kubernetes-archive-keyring.gpg] https://apt.kubernetes.io/ kubernetes-xenial main" | sudo tee /etc/apt/sources.list.d/kubernetes.list
+sudo apt-get update
+sudo apt-get install -y kubelet=$KUBERNETES_VERSION kubectl=$KUBERNETES_VERSION kubeadm=$KUBERNETES_VERSION
+sudo apt-mark hold kubelet kubeadm kubectl
+
+
+#Chevine sudo apt-get install -y apt-transport-https ca-certificates curl gnupg lsb-release containerd bash-completion
 
 # requirements to install Containerd https://kubernetes.io/docs/setup/production-environment/container-runtimes/#containerd
 
