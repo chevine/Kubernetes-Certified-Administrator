@@ -7,6 +7,12 @@ sudo swapoff -a
 # keeps the swap off during reboot
 sudo sed -i '/ swap / s/^\(.*\)$/#\1/g' /etc/fstab
 
+# Install docker
+sudo apt update
+sudo apt install docker.io -y
+sudo systemctl enable docker
+sudo systemctl status docker
+
 
 sudo apt-get update
 sudo apt-get install -y apt-transport-https ca-certificates curl

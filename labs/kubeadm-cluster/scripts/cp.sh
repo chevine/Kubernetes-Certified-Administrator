@@ -10,7 +10,8 @@ sudo kubeadm config images pull
 echo "Preflight Check Passed: Downloaded All Required Images"
 
 
-sudo kubeadm init --kubernetes-version=$KUBERNETES_VERSION --apiserver-advertise-address=$CP_IP  --apiserver-cert-extra-sans=$CP_IP --pod-network-cidr=$POD_CIDR --node-name $NODENAME  --cri-socket /run/containerd/containerd.sock  #--ignore-preflight-errors Swap
+#sudo kubeadm init --kubernetes-version=$KUBERNETES_VERSION --apiserver-advertise-address=$CP_IP  --apiserver-cert-extra-sans=$CP_IP --pod-network-cidr=$POD_CIDR --node-name $NODENAME  --cri-socket /run/containerd/containerd.sock  # --ignore-preflight-errors Swap
+sudo kubeadm init --apiserver-advertise-address=$CP_IP  --apiserver-cert-extra-sans=$CP_IP --pod-network-cidr=$POD_CIDR --node-name $NODENAME  --cri-socket /run/containerd/containerd.sock  # --ignore-preflight-errors Swap
 
 mkdir -p $HOME/.kube
 sudo cp -i /etc/kubernetes/admin.conf $HOME/.kube/config
