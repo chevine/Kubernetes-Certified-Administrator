@@ -11,7 +11,7 @@ echo "Preflight Check Passed: Downloaded All Required Images"
 
 
 #sudo kubeadm init --kubernetes-version=$KUBERNETES_VERSION --apiserver-advertise-address=$CP_IP  --apiserver-cert-extra-sans=$CP_IP --pod-network-cidr=$POD_CIDR --node-name $NODENAME  --cri-socket /run/containerd/containerd.sock  # --ignore-preflight-errors Swap
-sudo kubeadm init --apiserver-advertise-address=$CP_IP  --apiserver-cert-extra-sans=$CP_IP --pod-network-cidr=$POD_CIDR --node-name $NODENAME  --cri-socket /run/containerd/containerd.sock  # --ignore-preflight-errors Swap
+sudo kubeadm init --apiserver-advertise-address=$CP_IP  --apiserver-cert-extra-sans=$CP_IP --pod-network-cidr=$POD_CIDR --node-name $NODENAME  # --cri-socket /run/containerd/containerd.sock --ignore-preflight-errors Swap
 
 mkdir -p $HOME/.kube
 sudo cp -i /etc/kubernetes/admin.conf $HOME/.kube/config
@@ -29,7 +29,7 @@ else
    mkdir -p /vagrant/configs
 fi
 
-cp -i /etc/kubernetes/admin.conf /vagrant/configs/config
+sudo cp -i /etc/kubernetes/admin.conf /vagrant/configs/config
 touch /vagrant/configs/join.sh
 chmod +x /vagrant/configs/join.sh       
 
@@ -38,8 +38,10 @@ kubeadm token create --print-join-command > /vagrant/configs/join.sh
 
 # Install Calico Network Plugin
 
-curl https://docs.projectcalico.org/manifests/calico.yaml -O
-
+#Chevine curl https://docs.projectcalico.org/manifests/calico.yaml -O
+#Chevine curl https://docs.projectcalico.org/v3.14/manifests/calico.yaml -O
+echo "Applying the calico.yaml manifest..."
+cp /vagrant/scripts/calico.yaml .
 kubectl apply -f calico.yaml
 
 # Install Metrics Server

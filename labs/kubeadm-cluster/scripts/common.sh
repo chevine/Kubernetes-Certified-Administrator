@@ -46,8 +46,10 @@ EOF
 sudo sysctl --system
 
 sudo systemctl enable containerd --now
-
+sudo systemctl start docker
+sudo systemctl status docker
 echo "Container Runtime Configured Successfully"
+
 
 
 sudo apt-get install -y kubelet=$KUBERNETES_VERSION kubectl=$KUBERNETES_VERSION kubeadm=$KUBERNETES_VERSION
